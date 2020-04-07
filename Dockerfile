@@ -1,44 +1,49 @@
-FROM ubuntu:16.04
-LABEL maintainer="David Sn <divad.nnamtdeis@gmail.com>"
+FROM ubuntu:18.04
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV USER docker
-ENV HOSTNAME buildbot
-ENV USE_CCACHE 1
-ENV CCACHE_DIR /tmp/ccache
+ENV DEBIAN_FRONTEND=noninteractive \
+    USER=docker \
+    HOSTNAME=buildbot \
+    USE_CCACHE=1 \
+    CCACHE_DIR=/tmp/ccache
 
 # Install required dependencies 
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-        bc bison build-essential sudo ccache curl flex g++-multilib gcc-multilib git-core python gnupg gperf imagemagick openjdk-8-jre openjdk-8-jdk \
-        lib32ncurses5-dev lib32readline-dev lib32z1-dev libesd0-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libc6-dev libc6-dev-i386 libgl1-mesa-dev \
-        libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zip unzip zlib1g-dev libx11-dev x11proto-core-dev && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN set -x \
+    && apt-get -yqq update \
+    && apt-get -yqq dist-upgrade \
+    && apt-get install --no-install-recommends -yqq \
+        adb autoconf automake axel bc bison build-essential clang ccache cmake expat flex \
+        g++ g++-multilib gawk gcc gcc-multilib git-core gnupg gperf htop imagemagick lib32ncurses5-dev lib32z1-dev libtinfo5 \
+        libc6-dev libcap-dev libexpat1-dev libgmp-dev liblz4-* liblzma* libmpc-dev libmpfr-dev \
+        libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml2 libxml2-utils lzma* lzop maven ncftp ncurses-dev \
+        patch patchelf pkg-config pngcrush pngquant python python-all-dev re2c schedtool squashfs-tools subversion texinfo \
+        unzip w3m xsltproc zip zlib1g-dev lzip libxml-simple-perl curl git sudo rsync && \
+    apt-get clean
 
-# Install repo binary (thanks akheel)
-RUN curl --create-dirs -L -o /usr/local/bin/repo -O -L https://github.com/akhilnarang/repo/raw/master/repo && \
-    chmod a+x /usr/local/bin/repo
+# Install repo
+RUN set -x \
+    && curl --create-dirs -L -o /usr/local/bin/repo -O -L https://storage.googleapis.com/git-repo-downloads/repo \
+    && chmod a+x /usr/local/bin/repo
 
 # Create seperate build user
 RUN groupadd -g 1000 -r ${USER} && \
     useradd -u 1000 --create-home -r -g ${USER} ${USER} && \
-    mkdir -p /tmp/ccache /repo && \
-    chown -R ${USER}: /tmp/ccache /repo
-    
+    mkdir -p /tmp/ccache /src && \
+    chown -R ${USER}: /tmp/ccache /src
+
 # Allow sudo without password for build user
 RUN echo "${USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-docker-build && \
     usermod -aG sudo ${USER}
 
 # Setup volumes for persistent data
 USER ${USER}
-VOLUME ["/tmp/ccache", "/repo"]
+VOLUME ["/tmp/ccache", "/src"]
 
 # Create gitconfig for build user
 RUN git config --global user.name ${USER} && git config --global user.email ${USER}@${HOSTNAME}.local && \
-    git config --global ui.color auto
+    git config --global color.ui auto
 
 # Work in the build directory, repo is expected to be init'd here
-WORKDIR /repo
+WORKDIR /src
 
 # This is where the magic happens~
 ENTRYPOINT ["/bin/bash"]
