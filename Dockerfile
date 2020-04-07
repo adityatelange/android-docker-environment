@@ -4,6 +4,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     USER=docker \
     HOSTNAME=buildbot \
     USE_CCACHE=1 \
+    LC_ALL=C \
+    CCACHE_COMPRESS=1 \
     CCACHE_DIR=/tmp/ccache
 
 # Install required dependencies 
@@ -16,7 +18,7 @@ RUN set -x \
         libc6-dev libcap-dev libexpat1-dev libgmp-dev liblz4-* liblzma* libmpc-dev libmpfr-dev \
         libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml2 libxml2-utils lzma* lzop maven ncftp ncurses-dev \
         patch patchelf pkg-config pngcrush pngquant python python-all-dev re2c schedtool squashfs-tools subversion texinfo \
-        unzip w3m xsltproc zip zlib1g-dev lzip libxml-simple-perl curl git sudo rsync && \
+        unzip w3m xsltproc zip zlib1g-dev lzip libxml-simple-perl curl git sudo rsync zram-config && \
     apt-get clean
 
 # Install repo
