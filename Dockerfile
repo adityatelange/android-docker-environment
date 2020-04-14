@@ -14,7 +14,7 @@ RUN set -x \
     && apt-get -yqq dist-upgrade \
     && apt-get install --no-install-recommends -yqq \
         adb autoconf automake axel bc bison build-essential clang ccache cmake expat flex \
-        g++ g++-multilib gawk gcc gcc-multilib git-core gnupg gperf htop imagemagick lib32ncurses5-dev lib32z1-dev libtinfo5 \
+        g++ g++-multilib gawk gcc gcc-multilib git-core git-lfs gnupg gperf htop imagemagick lib32ncurses5-dev lib32z1-dev libtinfo5 \
         libc6-dev libcap-dev libexpat1-dev libgmp-dev liblz4-* liblzma* libmpc-dev libmpfr-dev \
         libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml2 libxml2-utils lzma* lzop maven ncftp ncurses-dev \
         patch patchelf pkg-config pngcrush pngquant python python-all-dev re2c schedtool squashfs-tools subversion texinfo \
