@@ -1,24 +1,19 @@
 FROM ubuntu:18.04
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    USER=docker \
-    HOSTNAME=buildbot \
-    USE_CCACHE=1 \
-    LC_ALL=C \
-    CCACHE_COMPRESS=1 \
-    CCACHE_DIR=/tmp/ccache
+ENV DEBIAN_FRONTEND noninteractive
+ENV USER docker 
+ENV HOSTNAME buildbot
+ENV USE_CCACHE 1
+ENV LC_ALL C
+ENV CCACHE_COMPRESS 1
+ENV CCACHE_SIZE 50G
+ENV CCACHE_DIR /tmp/ccache
 
 # Install required dependencies 
 RUN set -x \
     && apt-get -yqq update \
-    && apt-get -yqq dist-upgrade \
     && apt-get install --no-install-recommends -yqq \
-        adb autoconf automake axel bc bison build-essential clang ccache cmake expat flex \
-        g++ g++-multilib gawk gcc gcc-multilib git-core git-lfs gnupg gperf htop imagemagick lib32ncurses5-dev lib32z1-dev libtinfo5 \
-        libc6-dev libcap-dev libexpat1-dev libgmp-dev liblz4-* liblzma* libmpc-dev libmpfr-dev \
-        libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml2 libxml2-utils lzma* lzop maven ncftp ncurses-dev \
-        patch patchelf pkg-config pngcrush pngquant python python-all-dev re2c schedtool squashfs-tools subversion texinfo \
-        unzip w3m xsltproc zip zlib1g-dev lzip libxml-simple-perl curl git sudo rsync zram-config kmod && \
+        adb autoconf automake axel bc bison build-essential ccache clang cmake curl expat flex g++ g++-multilib gawk gcc gcc-multilib git git-core git-lfs gnupg gperf htop imagemagick kmod lib32ncurses5-dev lib32readline-dev lib32z1-dev libc6-dev libcap-dev libexpat1-dev libgmp-dev liblz4-* liblz4-tool liblzma* libmpc-dev libmpfr-dev libncurses5-dev libsdl1.2-dev libssl-dev libtinfo5 libtool libwxgtk3.0-dev libxml-simple-perl libxml2 libxml2-utils lzip lzma* lzop maven ncftp ncurses-dev patch patchelf pkg-config pngcrush pngquant python python-all-dev re2c rsync schedtool squashfs-tools subversion sudo texinfo unzip w3m xsltproc zip zlib1g-dev zram-config && \
     apt-get clean
 
 # Install repo
