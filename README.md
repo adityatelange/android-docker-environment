@@ -4,7 +4,7 @@ A all-in-one Docker ready image to build Android locally. Requires Linux or macO
 ### Deploying and running our container
 To create and run our container, we can use the following command syntax:
 ```
-docker run -it --name <container_name> --hostname <hostname> -v <local_repo>:/repo -v <local_ccache>:/tmp/ccache --rm divadsn/android-build:latest
+docker build -t buildbot .
 ```
 
 Now you are probably wondering what those arguments mean, right? Let me explain.
