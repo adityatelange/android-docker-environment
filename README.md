@@ -19,12 +19,12 @@ Now you are probably wondering what those arguments mean, right? Let me explain.
 
 Example when using volumes:
 ```
-docker run -it --name build --hostname buildbot -v build_repo:/repo -v build_ccache:/tmp/ccache --rm androidbuild:latest
+docker run -it --name build --hostname buildbot -v build_repo:/repo -v build_ccache:/tmp/ccache --rm buildbot:latest
 ```
 
 Example when using bind mounts:
 ```
-docker run -it --name build --hostname buildbot -v /home/${USER}/build/repo:/repo -v /home/${USER}/build/ccache:/tmp/ccache --rm androidbuild:latest
+docker run -it --name build --hostname buildbot -v /home/${USER}/build/repo:/repo -v /home/${USER}/build/ccache:/tmp/ccache --rm buildbot:latest
 ```
 
 After the container has been created, you should be greeted with a message about sudo access and you should be able to execute commands as user `docker` in directory `/repo`. Now you can go ahead and initialize your local repository using `repo init` and sync the sources, everything is setup to be ready to use.
