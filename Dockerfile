@@ -8,6 +8,8 @@ ENV LC_ALL C
 ENV CCACHE_COMPRESS 1
 ENV CCACHE_SIZE 50G
 ENV CCACHE_DIR /tmp/ccache
+ENV CCACHE_EXEC /usr/bin/ccache 
+ENV USE_CCACHE true
 
 # Install required dependencies 
 RUN set -x \
